@@ -1,0 +1,4 @@
+images/
+sounds/
+__pycache__/
+*.pyc
