@@ -54,11 +54,9 @@ class GameManager(Subject):
         self._enemy_fire_time = 0
         self._status.reset()
         self._effects.clear()
+        sound.SoundManager.get_instance().stop_over()
         sound.SoundManager.get_instance().bgmstart()
-        """
-        for i in range(8):
-            self._enemies.append(enemy.Enemy())
-        """
+
     def update(self):
         self.notify("distance")
         self._background.update(1600)
@@ -119,15 +117,27 @@ class GameManager(Subject):
                         e.is_alive = False
 
             e.update()
+            #敵が死んでいるかの判定
             if e.is_alive == False:
                 self._enemies.remove(e)
                 break
-
+            
+            #プレイヤーと敵の衝突判定
             if e.rect.colliderect(self._player.rect):
                 sound.SoundManager.get_instance().bgmstop()
                 sound.SoundManager.get_instance().playover()
                 self._is_playing = False
                 self._is_cleared = False
+                break
+            
+        #敵の弾とプレイヤーの衝突判定
+        for b in self._enemy_bullets:
+            if b.rect.colliderect(self._player.rect):
+                sound.SoundManager.get_instance().bgmstop()
+                sound.SoundManager.get_instance().playover()
+                self._is_playing = False
+                self._is_cleared = False
+                break
             
     def draw(self, screen):
         self._background.draw(screen, 1600)

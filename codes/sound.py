@@ -28,6 +28,9 @@ class SoundManager():
     
     def playover(self):
         self._over.play()
+
+    def stop_over(self):
+        self._over.stop()
     
     def playclear(self):
         self._clear.play()
