@@ -65,7 +65,7 @@ class GameManager(Subject):
                 b = bullet.Bullet(self._player.rect)
                 self._bullets.append(b)
                 self._bullet_count = 0
-            if key[pg.K_r]:
+            if key[pg.K_w]:
                 b = bullet.FireBullet(self._player.rect)
                 self._bullets.append(b)
                 self._bullet_count = 0
@@ -73,7 +73,7 @@ class GameManager(Subject):
                 b = bullet.LeafBullet(self._player.rect)
                 self._bullets.append(b)
                 self._bullet_count = 0
-            if key[pg.K_v]:
+            if key[pg.K_x]:
                 b = bullet.AquaBullet(self._player.rect)
                 self._bullets.append(b)
                 self._bullet_count = 0

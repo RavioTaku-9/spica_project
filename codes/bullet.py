@@ -31,16 +31,16 @@ class FireBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
         self._image = pg.image.load(r"..\\images\\bullet_fire.png")
-        self._damage = [34, 0, 100, 0]  # normal, fire, leaf, aqua
+        self._damage = [34, 100, 0, 0]  # normal, fire, leaf, aqua
 
 class LeafBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
         self._image = pg.image.load(r"..\\images\\bullet_leaf.png")
-        self._damage = [34, 0, 0, 100]  # normal, fire, leaf, aqua
+        self._damage = [34, 0, 100, 0]  # normal, fire, leaf, aqua
 
 class AquaBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
         self._image = pg.image.load(r"..\\images\\bullet_aqua.png")
-        self._damage = [34, 100, 0, 0]  # normal, fire, leaf, aqua
+        self._damage = [34, 0, 0, 100]  # normal, fire, leaf, aqua
