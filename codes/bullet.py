@@ -44,3 +44,9 @@ class AquaBullet(Bullet):
         super().__init__(rect)
         self._image = pg.image.load(r"..\\images\\bullet_aqua.png")
         self._damage = [34, 0, 0, 100]  # normal, fire, leaf, aqua
+
+class EnemyBullet(Bullet):
+    def __init__(self, rect):
+        super().__init__(rect)
+        self._image = pg.image.load(r"..\\images\\enemy_bullet.png")
+        self._vx = -10

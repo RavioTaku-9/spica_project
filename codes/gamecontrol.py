@@ -22,6 +22,8 @@ class GameManager(Subject):
         self._status = status.Status()
         self.attach(self._status)
         self._bullets = []
+        self._enemy_bullets = []
+        self._enemy_fire_time = 0
         self._background = background.Background()
         self.reset()
         #起動時の設定
@@ -48,6 +50,8 @@ class GameManager(Subject):
         self._spawn_count = 0
         self._bullets.clear()
         self._bullet_count = 0
+        self._enemy_bullets.clear()
+        self._enemy_fire_time = 0
         self._status.reset()
         self._effects.clear()
         sound.SoundManager.get_instance().bgmstart()
@@ -59,6 +63,8 @@ class GameManager(Subject):
         self.notify("distance")
         self._background.update(1600)
         self._bullet_count += 1
+        self._enemy_fire_time += 1
+
         if self._bullet_count >= 4:
             key = pg.key.get_pressed()
             if key[pg.K_s]:
@@ -78,10 +84,19 @@ class GameManager(Subject):
                 self._bullets.append(b)
                 self._bullet_count = 0
 
-            
+        # 敵の弾の生成
+        if self._enemy_fire_time >= 120:  # 2秒ごとに弾を発射
+            for e in self._enemies:
+                if e.is_alive:
+                    enemy_bullet = bullet.EnemyBullet(e.rect)
+                    self._enemy_bullets.append(enemy_bullet)
+            self._enemy_fire_time = 0
+
         for e in self._effects:
             e.update()
         for b in self._bullets:
+            b.update()
+        for b in self._enemy_bullets:
             b.update()
         self._player.update()
         self._spawn_count += 1
@@ -90,36 +105,19 @@ class GameManager(Subject):
             self._enemies.append(self._factory.random_create())
             self._spawn_count = 0
 
-        #remove_enemies = []
-        #remove_bullets = []
         for e in self._enemies:
             for b in self._bullets:
                 if e.rect.colliderect(b.rect):
-                    #sound.SoundManager.get_instance().playattack()
-                    #remove_bullets.append(b)
-
                     b.is_alive = False
                     if b.is_alive == False:
                         self._bullets.remove(b)
-                    #e.hp -= 100
                     e.hp = [hp - dmg for hp, dmg in zip(e.hp, b.damage)]
-                    #if e.hp <= 0:
                     if all(hp <= 0 for hp in e.hp):
                         self.notify("score")
                         self._effects.append(enemy.BombEffect(e.rect, self._effects))
                         sound.SoundManager.get_instance().playblast()
                         e.is_alive = False
-                        #remove_enemies.append(e)
-                        """
-                        if len(self._enemies) == 0:
-                            self._is_playing = False
-                            self._is_cleared = True
-                        """
-            
-            #敵が画面外に出たら消失
-            #if e.rect.x <= -100:
-            #    e.is_alive = False
-            #    #remove_enemies.append(e)
+
             e.update()
             if e.is_alive == False:
                 self._enemies.remove(e)
@@ -131,29 +129,6 @@ class GameManager(Subject):
                 self._is_playing = False
                 self._is_cleared = False
             
-
-        """
-        for b in remove_bullets:
-            if b in self._bullets:
-                self._bullets.remove(b)
-        for e in remove_enemies:
-            if e in self._enemies:
-                self._enemies.remove(e)
-        
-        if len(self._enemies) == 0:
-            self._is_playing = False
-            self._is_cleared = True
-        """
-        """
-                if e.hp <= 0:
-                    b = enemy.BombEffect(e.rect, self._effects)
-                    self._effects.append(b)
-                    self._enemies.remove(e)
-                    if len(self._enemies) == 0:
-                        self._is_playing = False
-                        self._is_cleared = True
-                    return
-                """
     def draw(self, screen):
         self._background.draw(screen, 1600)
         for b in self._bullets:
@@ -163,4 +138,7 @@ class GameManager(Subject):
         self._player.draw(screen)
         for e in self._enemies:
             e.draw(screen)
+        for b in self._enemy_bullets:
+            b.draw(screen)
+
         self._status.draw(screen)
