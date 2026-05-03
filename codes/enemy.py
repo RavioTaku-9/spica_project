@@ -1,10 +1,11 @@
 import pygame as pg
 import random
+from config import SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Enemy():
     def __init__(self):
-        x = random.randint(1800, 2000)
-        y = random.randint(50, 600)
+        x = random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 200)
+        y = random.randint(50, SCREEN_HEIGHT - 150)
         self._images = [
             pg.image.load(r"..\\images\\WBdolphin_1_100.png"),
             pg.image.load(r"..\\images\\WBdolphin_2_100.png"),
@@ -60,7 +61,7 @@ class Enemy():
         self._rect.x -= self._vx
         self._cnt += 1
         self._image = self._images[self._cnt // 10 % 4]
-        if self._rect.x < -100 or self._rect.x > 2000:
+        if self._rect.x < -100 or self._rect.x > SCREEN_WIDTH + 100 or self._rect.y < -100 or self._rect.y > SCREEN_HEIGHT + 100:
             self._is_alive = False
     
     def draw(self, screen):

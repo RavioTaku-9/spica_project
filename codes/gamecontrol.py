@@ -86,8 +86,9 @@ class GameManager(Subject):
         if self._enemy_fire_time >= 120:  # 2秒ごとに弾を発射
             for e in self._enemies:
                 if e.is_alive:
-                    enemy_bullet = bullet.EnemyBullet(e.rect)
-                    self._enemy_bullets.append(enemy_bullet)
+                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=-5)) 
+                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=0)) 
+                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=5)) 
             self._enemy_fire_time = 0
 
         for e in self._effects:
@@ -96,6 +97,10 @@ class GameManager(Subject):
             b.update()
         for b in self._enemy_bullets:
             b.update()
+        # プレイヤーの弾削除処理を追加
+        self._bullets = [b for b in self._bullets if b.is_alive] 
+        # 敵の弾の削除処理
+        self._enemy_bullets = [b for b in self._enemy_bullets if b.is_alive]
         self._player.update()
         self._spawn_count += 1
         #敵の生成
@@ -107,8 +112,6 @@ class GameManager(Subject):
             for b in self._bullets:
                 if e.rect.colliderect(b.rect):
                     b.is_alive = False
-                    if b.is_alive == False:
-                        self._bullets.remove(b)
                     e.hp = [hp - dmg for hp, dmg in zip(e.hp, b.damage)]
                     if all(hp <= 0 for hp in e.hp):
                         self.notify("score")
@@ -117,19 +120,15 @@ class GameManager(Subject):
                         e.is_alive = False
 
             e.update()
-            #敵が死んでいるかの判定
-            if e.is_alive == False:
-                self._enemies.remove(e)
-                break
-            
             #プレイヤーと敵の衝突判定
             if e.rect.colliderect(self._player.rect):
                 sound.SoundManager.get_instance().bgmstop()
                 sound.SoundManager.get_instance().playover()
                 self._is_playing = False
                 self._is_cleared = False
-                break
-            
+                
+        self._enemies = [e for e in self._enemies if e.is_alive]
+
         #敵の弾とプレイヤーの衝突判定
         for b in self._enemy_bullets:
             if b.rect.colliderect(self._player.rect):
@@ -137,8 +136,7 @@ class GameManager(Subject):
                 sound.SoundManager.get_instance().playover()
                 self._is_playing = False
                 self._is_cleared = False
-                break
-            
+                
     def draw(self, screen):
         self._background.draw(screen, 1600)
         for b in self._bullets:
