@@ -1,10 +1,10 @@
 import pygame as pg, sys
 import gamecontrol, resultscene
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, TITLE
 
 pg.init()
 screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pg.display.set_caption("spica_proto")
+pg.display.set_caption(TITLE)
 game = gamecontrol.GameManager()
 result = resultscene.ResultScene(game)
 

@@ -5,7 +5,7 @@ from config import SCREEN_WIDTH, SCREEN_HEIGHT
 class Enemy():
     def __init__(self):
         x = random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 200)
-        y = random.randint(50, SCREEN_HEIGHT - 150)
+        y = random.randint(50, SCREEN_HEIGHT - 400)
         self._images = [
             pg.image.load(r"..\\images\\WBdolphin_1_100.png"),
             pg.image.load(r"..\\images\\WBdolphin_2_100.png"),
@@ -14,7 +14,7 @@ class Enemy():
         ]
         self._image = self._images[0]
         self._rect = pg.Rect(x,y, 100, 100)
-        self._vx = 5
+        self._vx = 8
         self._vy = random.uniform(-1,-4)
         self._cnt = 0
         #self._maxhp = 100

@@ -1,0 +1,20 @@
+[mygame.py]
+
+画面の大きさ：(600, 650)
+草："SEAGREEN"、幅30
+
+[ResultScene]
+"Press SPACE to replay"
+r"D:\\Python\\Mygame\\images\\gameover.png"
+r"D:\\Python\\Mygame\\images\\gameclear.png"
+
+
+
+[player]
+r"D:\\Python\\Mygame\\images\\kaeru1.png"
+(250, 250, 50,50)
+
+[enemy]
+r"D:\\Python\\Mygame\\images\\enemy1.png"
+(x, 0, 50,50)
+r"D:\\Python\\Mygame\\images\\bomb_0.png"

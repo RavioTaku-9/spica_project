@@ -1,5 +1,6 @@
 import pygame as pg
 import player, enemy, bullet, background, status, sound
+from config import SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Subject():
     def __init__(self):
@@ -59,7 +60,7 @@ class GameManager(Subject):
 
     def update(self):
         self.notify("distance")
-        self._background.update(1600)
+        self._background.update(SCREEN_WIDTH)
         self._bullet_count += 1
         self._enemy_fire_time += 1
 
@@ -138,7 +139,7 @@ class GameManager(Subject):
                 self._is_cleared = False
                 
     def draw(self, screen):
-        self._background.draw(screen, 1600)
+        self._background.draw(screen, SCREEN_WIDTH)
         for b in self._bullets:
             b.draw(screen)
         for e in self._effects:

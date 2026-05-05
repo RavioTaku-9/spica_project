@@ -1,8 +1,9 @@
 import pygame as pg
+from config import BACKGROUND_IMAGE
 
 class Background():
     def __init__(self):
-        self._image = pg.image.load(r"..\\images\\background.jpg")
+        self._image = pg.image.load(BACKGROUND_IMAGE)
         self._bg_x = 0
         self._rect = self._image.get_rect()
         self._rect.topleft = (0, 0)
