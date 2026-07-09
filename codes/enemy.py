@@ -1,16 +1,16 @@
 import pygame as pg
 import random
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, load_image
 
 class Enemy():
     def __init__(self):
         x = random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 200)
         y = random.randint(50, SCREEN_HEIGHT - 400)
         self._images = [
-            pg.image.load(r"..\\images\\WBdolphin_1_100.png"),
-            pg.image.load(r"..\\images\\WBdolphin_2_100.png"),
-            pg.image.load(r"..\\images\\WBdolphin_3_100.png"),
-            pg.image.load(r"..\\images\\WBdolphin_2_100.png")
+            load_image(r"..\\images\\WBdolphin_1_100.png"),
+            load_image(r"..\\images\\WBdolphin_2_100.png"),
+            load_image(r"..\\images\\WBdolphin_3_100.png"),
+            load_image(r"..\\images\\WBdolphin_2_100.png")
         ]
         self._image = self._images[0]
         self._rect = pg.Rect(x,y, 100, 100)
@@ -70,7 +70,7 @@ class Enemy():
 class EnemyLeaf(Enemy):
     def __init__(self):
         super().__init__()
-        self._images = [pg.image.load(r"..\\images\\enemy_leaf.png")] * 4  # 4枚同じ画像でリストを作る
+        self._images = [load_image(r"..\\images\\enemy_leaf.png")] * 4  # 4枚同じ画像でリストを作る
         self._image = self._images[0]
         self._etype = "leaf"
         self._maxhp = [0, 0, 100, 0]#normal, fire, leaf, aqua
@@ -79,7 +79,7 @@ class EnemyLeaf(Enemy):
 class EnemyAqua(Enemy):
     def __init__(self):
         super().__init__()
-        self._images = [pg.image.load(r"..\\images\\enemy_aqua.png")] * 4  # 4枚同じ画像でリストを作る
+        self._images = [load_image(r"..\\images\\enemy_aqua.png")] * 4  # 4枚同じ画像でリストを作る
         self._image = self._images[0]
         self._etype = "aqua"
         self._maxhp = [0, 0, 0, 100]#normal, fire, leaf, aqua
@@ -88,7 +88,7 @@ class EnemyAqua(Enemy):
 class EnemyFire(Enemy):
     def __init__(self):
         super().__init__()
-        self._images = [pg.image.load(r"..\\images\\enemy_fire.png")] * 4  # 4枚同じ画像でリストを作る
+        self._images = [load_image(r"..\\images\\enemy_fire.png")] * 4  # 4枚同じ画像でリストを作る
         self._image = self._images[0]
         self._etype = "fire"
         self._maxhp = [0, 100, 0, 0]#normal, fire, leaf, aqua
@@ -97,12 +97,12 @@ class EnemyFire(Enemy):
 class BombEffect():
     def __init__(self, rect, effects):
         self._images = [
-            pg.image.load(r"..\\images\\bomb_0.png"),
-            pg.image.load(r"..\\images\\bomb_1.png"),
-            pg.image.load(r"..\\images\\bomb_2.png"),
-            pg.image.load(r"..\\images\\bomb_3.png"),
-            pg.image.load(r"..\\images\\bomb_4.png"),
-            pg.image.load(r"..\\images\\bomb_5.png")
+            load_image(r"..\\images\\bomb_0.png"),
+            load_image(r"..\\images\\bomb_1.png"),
+            load_image(r"..\\images\\bomb_2.png"),
+            load_image(r"..\\images\\bomb_3.png"),
+            load_image(r"..\\images\\bomb_4.png"),
+            load_image(r"..\\images\\bomb_5.png")
         ]
         self._image = self._images[0]
         self._effects = effects
@@ -131,7 +131,7 @@ class EnemyFactory():
         elif etype == "fire":
             return EnemyFire()
         # Add more enemy types here as needed
-        return None
+        raise ValueError(f"Unknown enemy type: {etype!r}")
     
     def random_create(self):
         etypes = random.choice(["leaf", "fire", "aqua"])

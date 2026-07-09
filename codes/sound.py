@@ -1,5 +1,6 @@
 import pygame as pg
 import random
+from config import load_sound, load_music
 
 class SoundManager():
     _instance = None
@@ -11,25 +12,25 @@ class SoundManager():
         return cls._instance
     
     def __init__(self):
-        pg.mixer.music.load(r"..//sounds//maou_bgm_piano40.mp3")
-        self._start = pg.mixer.Sound(r"..//sounds//鈴を鳴らす.mp3")
+        load_music(r"..//sounds//maou_bgm_piano40.mp3")
+        self._start = load_sound(r"..//sounds//鈴を鳴らす.mp3")
         self._over_sounds = [
-            pg.mixer.Sound(r"..//sounds//shozyo2-shobon.mp3"),
-            pg.mixer.Sound(r"..//sounds//shozyo2-human.mp3"),
-            #pg.mixer.Sound(r"..//sounds//shozyo1-yararema.mp3"),
+            load_sound(r"..//sounds//shozyo2-shobon.mp3"),
+            load_sound(r"..//sounds//shozyo2-human.mp3"),
+            #load_sound(r"..//sounds//shozyo1-yararema.mp3"),
         ]
         self._current_over = None  # 今鳴っている音を保持
 
-        self._clear = pg.mixer.Sound(r"..//sounds//clear.wav")
-        self._clap1 = pg.mixer.Sound(r"..//sounds//clap1.wav")
-        self._clap2 = pg.mixer.Sound(r"..//sounds//clap2.wav")
-        self._clap3 = pg.mixer.Sound(r"..//sounds//clap3.wav")
+        self._clear = load_sound(r"..//sounds//clear.wav")
+        self._clap1 = load_sound(r"..//sounds//clap1.wav")
+        self._clap2 = load_sound(r"..//sounds//clap2.wav")
+        self._clap3 = load_sound(r"..//sounds//clap3.wav")
         
-        self._bomb = pg.mixer.Sound(r"..//sounds//bomb.wav")
-        self._blast = pg.mixer.Sound(r"..//sounds//blast.wav")
-        self._blast1 = pg.mixer.Sound(r"..//sounds//Glocken01-1(Single).mp3")
-        self._blast2 = pg.mixer.Sound(r"..//sounds//Glocken01-2(Single).mp3")
-        self._blast3 = pg.mixer.Sound(r"..//sounds//Glocken01-3(Single).mp3")
+        self._bomb = load_sound(r"..//sounds//bomb.wav")
+        self._blast = load_sound(r"..//sounds//blast.wav")
+        self._blast1 = load_sound(r"..//sounds//Glocken01-1(Single).mp3")
+        self._blast2 = load_sound(r"..//sounds//Glocken01-2(Single).mp3")
+        self._blast3 = load_sound(r"..//sounds//Glocken01-3(Single).mp3")
 
     def bgmstart(self):
         pg.mixer.music.play(-1)

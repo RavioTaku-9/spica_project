@@ -1,10 +1,11 @@
 import pygame as pg
+from config import load_image
 class Bullet():
     def __init__(self, rect):
         x = rect.x + 80
         y = rect.y + 20
 
-        self._image = pg.image.load(r"..\\images\\bullet.png")
+        self._image = load_image(r"..\\images\\bullet.png")
         self._rect = self._image.get_rect()
         self._rect.topleft = (x, y)
         self._vx = 10
@@ -40,25 +41,25 @@ class Bullet():
 class FireBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\bullet_fire.png")
+        self._image = load_image(r"..\\images\\bullet_fire.png")
         self._damage = [34, 100, 0, 0]  # normal, fire, leaf, aqua
 
 class LeafBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\bullet_leaf.png")
+        self._image = load_image(r"..\\images\\bullet_leaf.png")
         self._damage = [34, 0, 100, 0]  # normal, fire, leaf, aqua
 
 class AquaBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\bullet_aqua.png")
+        self._image = load_image(r"..\\images\\bullet_aqua.png")
         self._damage = [34, 0, 0, 100]  # normal, fire, leaf, aqua
 
 class EnemyBullet(Bullet):
     def __init__(self, rect,vx=-10, vy=0):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\enemy_bullet.png")
+        self._image = load_image(r"..\\images\\enemy_bullet.png")
         self._vx = vx
         self._vy = vy
 
