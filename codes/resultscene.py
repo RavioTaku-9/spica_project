@@ -1,6 +1,6 @@
 import pygame as pg
 
-from config import BACKGROUND_IMAGE, GAMECLEAR_IMAGE, GAMEOVER_IMAGE, TITLE, TITLE_IMAGE, SCREEN_WIDTH, SCREEN_HEIGHT
+from config import BACKGROUND_IMAGE, GAMECLEAR_IMAGE, GAMEOVER_IMAGE, TITLE, TITLE_IMAGE, SCREEN_WIDTH, SCREEN_HEIGHT, load_image
 
 class ResultScene():
     def __init__(self, game):
@@ -8,10 +8,10 @@ class ResultScene():
         self._game = game
         self._msg = font.render("Press SPACE to replay.", True, pg.Color("WHITE"))
         self._titlemsg = font.render(TITLE, True, pg.Color("WHITE"))
-        self._gameover = pg.image.load(GAMEOVER_IMAGE)
-        self._gameover_spica = pg.image.load(r"..\\images\\gameover_spica.PNG")
-        self._gameclear = pg.image.load(GAMECLEAR_IMAGE)
-        self._title = pg.image.load(TITLE_IMAGE)
+        self._gameover = load_image(GAMEOVER_IMAGE)
+        self._gameover_spica = load_image(r"..\\images\\gameover_spica.PNG")
+        self._gameclear = load_image(GAMECLEAR_IMAGE)
+        self._title = load_image(TITLE_IMAGE)
 
     def update(self):
         key = pg.key.get_pressed()

@@ -1,5 +1,5 @@
 import pygame as pg
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, load_image
 
 class Player():
     def __init__(self):
@@ -14,16 +14,16 @@ class Player():
 
     def reset(self):
         self._images = [
-            pg.image.load(r"..\\images\\majo_side_1_100.png"),
-            pg.image.load(r"..\\images\\majo_side_2_100.png"),
-            pg.image.load(r"..\\images\\majo_side_1_100.png"),
-            pg.image.load(r"..\\images\\majo_side_3_100.png")
+            load_image(r"..\\images\\majo_side_1_100.png"),
+            load_image(r"..\\images\\majo_side_2_100.png"),
+            load_image(r"..\\images\\majo_side_1_100.png"),
+            load_image(r"..\\images\\majo_side_3_100.png")
         ]
         self._image = self._images[0]
 
-        self._image_fire = pg.image.load(r"..\\images\\bullet_fire.png")
-        self._image_leaf = pg.image.load(r"..\\images\\bullet_leaf.png")
-        self._image_aqua = pg.image.load(r"..\\images\\bullet_aqua.png")
+        self._image_fire = load_image(r"..\\images\\bullet_fire.png")
+        self._image_leaf = load_image(r"..\\images\\bullet_leaf.png")
+        self._image_aqua = load_image(r"..\\images\\bullet_aqua.png")
 
         self._rect = pg.Rect(250, 200, 100,100)
         self._speed = 10

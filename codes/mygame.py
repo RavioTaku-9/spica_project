@@ -8,22 +8,26 @@ pg.display.set_caption(TITLE)
 game = gamecontrol.GameManager()
 result = resultscene.ResultScene(game)
 
-while True:
-    screen.fill(pg.Color("NAVY"))
-    if game.is_playing == True:
-        game.update()
-    else:
-        result.update()
+clock = pg.time.Clock()
 
-    game.draw(screen)
-    if game.is_playing == False:
-        result.draw(screen)
+try:
+    while True:
+        screen.fill(pg.Color("NAVY"))
+        if game.is_playing == True:
+            game.update()
+        else:
+            result.update()
 
-    pg.display.update()
-    pg.time.Clock().tick(60)
+        game.draw(screen)
+        if game.is_playing == False:
+            result.draw(screen)
 
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            pg.quit()
-            sys.exit()
+        pg.display.update()
+        clock.tick(60)
+
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                sys.exit()
+finally:
+    pg.quit()
 
