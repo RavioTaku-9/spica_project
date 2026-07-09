@@ -1,5 +1,6 @@
 import pygame as pg
 from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from utils import load_image, advance_animation
 
 class Player():
     def __init__(self):
@@ -14,16 +15,16 @@ class Player():
 
     def reset(self):
         self._images = [
-            pg.image.load(r"..\\images\\majo_side_1_100.png"),
-            pg.image.load(r"..\\images\\majo_side_2_100.png"),
-            pg.image.load(r"..\\images\\majo_side_1_100.png"),
-            pg.image.load(r"..\\images\\majo_side_3_100.png")
+            load_image("majo_side_1_100.png"),
+            load_image("majo_side_2_100.png"),
+            load_image("majo_side_1_100.png"),
+            load_image("majo_side_3_100.png")
         ]
         self._image = self._images[0]
 
-        self._image_fire = pg.image.load(r"..\\images\\bullet_fire.png")
-        self._image_leaf = pg.image.load(r"..\\images\\bullet_leaf.png")
-        self._image_aqua = pg.image.load(r"..\\images\\bullet_aqua.png")
+        self._image_fire = load_image("bullet_fire.png")
+        self._image_leaf = load_image("bullet_leaf.png")
+        self._image_aqua = load_image("bullet_aqua.png")
 
         self._rect = pg.Rect(250, 200, 100,100)
         self._speed = 10
@@ -49,7 +50,7 @@ class Player():
             vx = 0
         self._rect.x += vx
         self._cnt += 1
-        self._image = self._images[self._cnt // 10 % 4]
+        self._image = advance_animation(self._images, self._cnt)
 
     def draw(self, screen):
         screen.blit(self._image, self._rect)
@@ -65,6 +66,3 @@ class Player():
         aqua_rect.x += 30
         aqua_rect.y += 110  
         #screen.blit(self._image_aqua, aqua_rect)
-
-
-
