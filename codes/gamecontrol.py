@@ -26,6 +26,12 @@ class GameManager(Subject):
         self._enemy_bullets = []
         self._enemy_fire_time = 0
         self._background = background.Background()
+        self._fire_keys = {
+            pg.K_s: bullet.Bullet,
+            pg.K_w: bullet.FireBullet,
+            pg.K_a: bullet.LeafBullet,
+            pg.K_x: bullet.AquaBullet,
+        }
         self.reset()
         #起動時の設定
         self._is_titling = True
@@ -66,30 +72,17 @@ class GameManager(Subject):
 
         if self._bullet_count >= 4:
             key = pg.key.get_pressed()
-            if key[pg.K_s]:
-                b = bullet.Bullet(self._player.rect)
-                self._bullets.append(b)
-                self._bullet_count = 0
-            if key[pg.K_w]:
-                b = bullet.FireBullet(self._player.rect)
-                self._bullets.append(b)
-                self._bullet_count = 0
-            if key[pg.K_a]:
-                b = bullet.LeafBullet(self._player.rect)
-                self._bullets.append(b)
-                self._bullet_count = 0
-            if key[pg.K_x]:
-                b = bullet.AquaBullet(self._player.rect)
-                self._bullets.append(b)
-                self._bullet_count = 0
+            for key_code, bullet_cls in self._fire_keys.items():
+                if key[key_code]:
+                    self._bullets.append(bullet_cls(self._player.rect))
+                    self._bullet_count = 0
 
         # 敵の弾の生成
         if self._enemy_fire_time >= 120:  # 2秒ごとに弾を発射
             for e in self._enemies:
                 if e.is_alive:
-                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=-5)) 
-                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=0)) 
-                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=5)) 
+                    for vy in (-5, 0, 5):
+                        self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=vy))
             self._enemy_fire_time = 0
 
         for e in self._effects:
@@ -123,21 +116,21 @@ class GameManager(Subject):
             e.update()
             #プレイヤーと敵の衝突判定
             if e.rect.colliderect(self._player.rect):
-                sound.SoundManager.get_instance().bgmstop()
-                sound.SoundManager.get_instance().playover()
-                self._is_playing = False
-                self._is_cleared = False
-                
+                self._end_game()
+
         self._enemies = [e for e in self._enemies if e.is_alive]
 
         #敵の弾とプレイヤーの衝突判定
         for b in self._enemy_bullets:
             if b.rect.colliderect(self._player.rect):
-                sound.SoundManager.get_instance().bgmstop()
-                sound.SoundManager.get_instance().playover()
-                self._is_playing = False
-                self._is_cleared = False
-                
+                self._end_game()
+
+    def _end_game(self):
+        sound.SoundManager.get_instance().bgmstop()
+        sound.SoundManager.get_instance().playover()
+        self._is_playing = False
+        self._is_cleared = False
+
     def draw(self, screen):
         self._background.draw(screen, SCREEN_WIDTH)
         for b in self._bullets:
