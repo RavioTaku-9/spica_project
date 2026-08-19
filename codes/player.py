@@ -1,5 +1,5 @@
 import pygame as pg
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from config import CUT_HEIGHT, RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, scale_x, scale_y
 
 class Player():
     def __init__(self):
@@ -13,20 +13,22 @@ class Player():
         self._rect = value
 
     def reset(self):
+
+        self._base_size = 16 * RATIO_X  # 基本サイズをRATIO_Xでスケーリング
+        self._w = self._base_size
+        self._h = self._base_size
+
         self._images = [
-            pg.image.load(r"..\\images\\majo_side_1_100.png"),
-            pg.image.load(r"..\\images\\majo_side_2_100.png"),
-            pg.image.load(r"..\\images\\majo_side_1_100.png"),
-            pg.image.load(r"..\\images\\majo_side_3_100.png")
+            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
         ]
         self._image = self._images[0]
 
-        self._image_fire = pg.image.load(r"..\\images\\bullet_fire.png")
-        self._image_leaf = pg.image.load(r"..\\images\\bullet_leaf.png")
-        self._image_aqua = pg.image.load(r"..\\images\\bullet_aqua.png")
-
-        self._rect = pg.Rect(250, 200, 100,100)
-        self._speed = 10
+     
+        self._rect = pg.Rect(scale_x(5), scale_y(2), self._w, self._h)
+        self._speed = scale_x(1)
         self._cnt = 0
 
     def update(self):
@@ -37,7 +39,7 @@ class Player():
             vy = -self._speed
         if key[pg.K_DOWN]:
             vy = self._speed
-        if self._rect.y + vy < 0 or self._rect.y + vy > SCREEN_HEIGHT - 350:
+        if self._rect.y + vy < 0 or self._rect.y + vy > (CUT_HEIGHT - 16) * RATIO_Y:
             vy = 0
         self._rect.y += vy
 
@@ -45,7 +47,7 @@ class Player():
             vx = self._speed
         if key[pg.K_LEFT]:
             vx = -self._speed
-        if self._rect.x + vx < 0 or self._rect.x + vx > SCREEN_WIDTH - 100:
+        if self._rect.x + vx < 0 or self._rect.x + vx > SCREEN_WIDTH - 16 * RATIO_X:
             vx = 0
         self._rect.x += vx
         self._cnt += 1
@@ -54,16 +56,16 @@ class Player():
     def draw(self, screen):
         screen.blit(self._image, self._rect)
         fire_rect = self._rect.copy()
-        fire_rect.x += 30
-        fire_rect.y -= 30  # y座標を100小さく
+        fire_rect.x += 3 * RATIO_X  
+        fire_rect.y -= 3 * RATIO_Y  
         #screen.blit(self._image_fire, fire_rect)
         leaf_rect = self._rect.copy()
-        leaf_rect.x -= 30
-        leaf_rect.y += 30  
+        leaf_rect.x -= 3 * RATIO_X
+        leaf_rect.y += 3 * RATIO_Y  
         #screen.blit(self._image_leaf, leaf_rect)
         aqua_rect = self._rect.copy()
-        aqua_rect.x += 30
-        aqua_rect.y += 110  
+        aqua_rect.x += 3 * RATIO_X
+        aqua_rect.y += 11 * RATIO_Y
         #screen.blit(self._image_aqua, aqua_rect)
 
 

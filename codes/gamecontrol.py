@@ -1,6 +1,6 @@
 import pygame as pg
 import player, enemy, bullet, background, status, sound
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from config import RATIO_X, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Subject():
     def __init__(self):
@@ -64,10 +64,10 @@ class GameManager(Subject):
         self._bullet_count += 1
         self._enemy_fire_time += 1
 
-        if self._bullet_count >= 4:
+        if self._bullet_count >= 40:
             key = pg.key.get_pressed()
             if key[pg.K_s]:
-                b = bullet.Bullet(self._player.rect)
+                b = bullet.StarBullet(self._player.rect)
                 self._bullets.append(b)
                 self._bullet_count = 0
             if key[pg.K_w]:
@@ -86,10 +86,10 @@ class GameManager(Subject):
         # 敵の弾の生成
         if self._enemy_fire_time >= 120:  # 2秒ごとに弾を発射
             for e in self._enemies:
-                if e.is_alive:
-                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=-5)) 
-                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=0)) 
-                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-10, vy=5)) 
+                if e.is_alive and e._can_shoot:
+                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-1.1 * RATIO_X, vy=-1.1 * RATIO_X)) 
+                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-1.1 * RATIO_X, vy=0)) 
+                    self._enemy_bullets.append(bullet.EnemyBullet(e.rect, vx=-1.1 * RATIO_X, vy=1.1 * RATIO_X)) 
             self._enemy_fire_time = 0
 
         for e in self._effects:
@@ -116,7 +116,7 @@ class GameManager(Subject):
                     e.hp = [hp - dmg for hp, dmg in zip(e.hp, b.damage)]
                     if all(hp <= 0 for hp in e.hp):
                         self.notify("score")
-                        self._effects.append(enemy.BombEffect(e.rect, self._effects))
+                        self._effects.append(enemy.BombEffectStar(e.rect, self._effects))
                         sound.SoundManager.get_instance().playblast()
                         e.is_alive = False
 
