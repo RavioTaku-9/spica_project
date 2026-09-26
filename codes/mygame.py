@@ -18,8 +18,8 @@ while True:
     screen.fill(pg.Color("WHITE"))
     if game.is_playing == True:
         game.update()
-        
     else:
+        game.update_effects()
         result.update()
 
     game.draw(screen)

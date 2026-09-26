@@ -1,6 +1,6 @@
 import pygame as pg
 import player, enemy, bullet, background, status, sound
-from config import RATIO_X, SCREEN_WIDTH, SCREEN_HEIGHT
+from config import IFRAMES, SPICA_HP_MAX, RATIO_X, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Subject():
     def __init__(self):
@@ -20,7 +20,7 @@ class GameManager(Subject):
         self._enemies = []
         self._effects = []
         self._factory = enemy.EnemyFactory()
-        self._status = status.Status()
+        self._status = status.Status(self)
         self.attach(self._status)
         self._bullets = []
         self._enemy_bullets = []
@@ -41,11 +41,18 @@ class GameManager(Subject):
     @property
     def is_cleared(self):
         return self._is_cleared
-    
+
+    @property
+    def spica_hp(self):
+        return self._spica_hp
+
     def reset(self):
         self._is_titling = False
         self._is_playing = True
         self._is_cleared = False
+        self._spica_hp = SPICA_HP_MAX
+        self._iframes = 0
+        self._death_effect_started = False
         self._player.reset()
         self._enemies.clear()
         self._spawn_count = 0
@@ -62,6 +69,7 @@ class GameManager(Subject):
         self.notify("distance")
         self._background.update(SCREEN_WIDTH)
         self._bullet_count += 1
+        self._iframes -= 1
         self._enemy_fire_time += 1
 
         if self._bullet_count >= 40:
@@ -122,32 +130,56 @@ class GameManager(Subject):
 
             e.update()
             #プレイヤーと敵の衝突判定
-            if e.rect.colliderect(self._player.rect):
-                sound.SoundManager.get_instance().bgmstop()
-                sound.SoundManager.get_instance().playover()
-                self._is_playing = False
-                self._is_cleared = False
+            if e.rect.colliderect(self._player.rect) and self._iframes <= 0:
+                self._spica_hp -= 1
+                self._iframes = IFRAMES
+                if self._spica_hp <= 0:
+                    self.game_over()
                 
         self._enemies = [e for e in self._enemies if e.is_alive]
 
         #敵の弾とプレイヤーの衝突判定
         for b in self._enemy_bullets:
-            if b.rect.colliderect(self._player.rect):
-                sound.SoundManager.get_instance().bgmstop()
-                sound.SoundManager.get_instance().playover()
-                self._is_playing = False
-                self._is_cleared = False
-                
+            if b.rect.colliderect(self._player.rect) and self._iframes <= 0:
+                self._spica_hp -= 1
+                self._iframes = IFRAMES
+                b.is_alive = False
+                if self._spica_hp <= 0:
+                    self.game_over()
+
     def draw(self, screen):
         self._background.draw(screen, SCREEN_WIDTH)
         for b in self._bullets:
             b.draw(screen)
         for e in self._effects:
             e.draw(screen)
-        self._player.draw(screen)
+
+        self._player.draw(screen, self._iframes > 0)
+
         for e in self._enemies:
             e.draw(screen)
         for b in self._enemy_bullets:
             b.draw(screen)
 
         self._status.draw(screen)
+
+    def game_over(self):
+        if self._death_effect_started:
+            return
+
+        self._death_effect_started = True
+        self._player._is_visible = False
+
+        effect_rect = self._player.rect.copy()
+        self._effects.append(
+            enemy.BombEffectStar(effect_rect, self._effects)
+        )
+
+        sound.SoundManager.get_instance().bgmstop()
+        sound.SoundManager.get_instance().playover()
+        self._is_playing = False
+        self._is_cleared = False
+
+    def update_effects(self):
+        for effect in self._effects.copy():
+            effect.update()

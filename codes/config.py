@@ -27,4 +27,5 @@ def scale_x(value):
 def scale_y(value):
     return int(value * RATIO_Y)
 
-
+SPICA_HP_MAX = 5
+IFRAMES = 60

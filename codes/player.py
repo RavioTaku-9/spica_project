@@ -1,8 +1,9 @@
 import pygame as pg
-from config import CUT_HEIGHT, RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, scale_x, scale_y
+from config import CUT_HEIGHT,  RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, scale_x, scale_y
 
 class Player():
     def __init__(self):
+        self._is_visible = True
         self.reset()
 
     @property
@@ -13,7 +14,7 @@ class Player():
         self._rect = value
 
     def reset(self):
-
+        self._is_visible = True
         self._base_size = 16 * RATIO_X  # 基本サイズをRATIO_Xでスケーリング
         self._w = self._base_size
         self._h = self._base_size
@@ -26,7 +27,6 @@ class Player():
         ]
         self._image = self._images[0]
 
-     
         self._rect = pg.Rect(scale_x(5), scale_y(2), self._w, self._h)
         self._speed = scale_x(1)
         self._cnt = 0
@@ -53,7 +53,11 @@ class Player():
         self._cnt += 1
         self._image = self._images[self._cnt // 10 % 4]
 
-    def draw(self, screen):
+    def draw(self, screen, invincible=False):
+        if not self._is_visible:
+            return
+        if invincible and self._cnt % 6 < 3:
+            return
         screen.blit(self._image, self._rect)
         fire_rect = self._rect.copy()
         fire_rect.x += 3 * RATIO_X  

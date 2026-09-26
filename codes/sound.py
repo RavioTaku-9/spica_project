@@ -14,10 +14,20 @@ class SoundManager():
         pg.mixer.music.load(r"..//sounds//maou_bgm_piano40.mp3")
         self._start = pg.mixer.Sound(r"..//sounds//鈴を鳴らす.mp3")
         self._over_sounds = [
-            pg.mixer.Sound(r"..//sounds//shozyo2-shobon.mp3"),
-            pg.mixer.Sound(r"..//sounds//shozyo2-human.mp3"),
+            pg.mixer.Sound(r"..//sounds//maou_se_battle14.mp3"),
+            #pg.mixer.Sound(r"..//sounds//shozyo2-shobon.mp3"),
+            #pg.mixer.Sound(r"..//sounds//shozyo2-human.mp3"),
             #pg.mixer.Sound(r"..//sounds//shozyo1-yararema.mp3"),
         ]
+        self._over_voices = [
+            pg.mixer.Sound(r"..//sounds//shozyo1-yararema.mp3"),
+        ]
+
+        for voice in self._over_voices:
+            voice.set_volume(1.0)
+
+        self._over_channel = pg.mixer.Channel(1)
+    
         self._current_over = None  # 今鳴っている音を保持
 
         self._clear = pg.mixer.Sound(r"..//sounds//clear.wav")
@@ -38,12 +48,16 @@ class SoundManager():
         pg.mixer.music.stop()
     
     def playover(self):
-        self._current_over = random.choice(self._over_sounds)
-        self._current_over.play()
+        over_sound = random.choice(self._over_sounds)
+        over_voice = random.choice(self._over_voices)
+
+        self._over_channel.play(over_sound)
+        self._over_channel.queue(over_voice)
 
     def stop_over(self):
         if self._current_over:
             self._current_over.stop()
+            self._over_channel.stop()
             self._current_over = None
 
     def playclear(self):
