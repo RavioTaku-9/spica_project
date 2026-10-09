@@ -24,11 +24,5 @@ SCREEN_HEIGHT = 144 * 4
 RATIO_X = SCREEN_WIDTH / BASE_SCREEN_WIDTH
 RATIO_Y = SCREEN_HEIGHT / BASE_SCREEN_HEIGHT
 
-# def scale_x(value):
-#     return int(value * RATIO_X)
-
-# def scale_y(value):
-#     return int(value * RATIO_Y)
-
-SPICA_HP_MAX = 1
+SPICA_HP_MAX = 2
 IFRAMES = 60

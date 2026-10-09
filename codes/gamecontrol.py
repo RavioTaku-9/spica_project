@@ -142,6 +142,8 @@ class GameManager(Subject):
         for b in self._enemy_bullets:
             if b.rect.colliderect(self._player.rect) and self._iframes <= 0:
                 self._spica_hp -= 1
+                if self._spica_hp == 1:
+                    sound.SoundManager.get_instance().lifealart()
                 self._iframes = IFRAMES
                 b.is_alive = False
                 if self._spica_hp <= 0:
