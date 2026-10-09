@@ -6,8 +6,8 @@ BASE_DIR = Path(__file__).resolve().parent
 IMAGE_DIR = BASE_DIR.parent / "images"
 SOUND_DIR = BASE_DIR.parent / "sounds"
 
-TITLE_IMAGE = IMAGE_DIR / "background_night_160x144.png"
-BACKGROUND_IMAGE = IMAGE_DIR / "background_cloud_2.png"
+TITLE_IMAGE = IMAGE_DIR / "background_night_town.png"
+BACKGROUND_IMAGE = IMAGE_DIR / "background_night_town.png"
 GAMECLEAR_IMAGE = IMAGE_DIR / "gameclear.png"
 GAMEOVER_IMAGE = IMAGE_DIR / "gameover.png"
 

@@ -13,7 +13,7 @@ class Background():
         self._rect = self._image.get_rect()
         self._rect.topleft = (0, 0)
     def update(self, screen_width):
-        self._bg_x -= 1.5
+        self._bg_x -= 0.5
         if self._bg_x <= -screen_width:
             self._bg_x = 0
 
@@ -23,7 +23,7 @@ class Background():
         clip_rect = pg.Rect(0, 0, screen_width, cut_h)
         screen.set_clip(clip_rect)
 
-        screen.blit(self._image, (self._bg_x, 0))
-        screen.blit(self._image, (self._bg_x + screen_width, 0))
+        screen.blit(self._image, (self._bg_x, -70))
+        screen.blit(self._image, (self._bg_x + screen_width, -70))
 
         screen.set_clip(None)
