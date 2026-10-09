@@ -3,7 +3,7 @@ import math
 
 import pygame as pg
 import random
-from config import  CUT_HEIGHT, RATIO_X, RATIO_Y, BASE_SCREEN_WIDTH, BASE_SCREEN_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH
+from config import  CUT_HEIGHT, RATIO_X, RATIO_Y, BASE_SCREEN_WIDTH, BASE_SCREEN_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH, IMAGE_DIR
 
 class Enemy():
     def __init__(self):
@@ -14,8 +14,8 @@ class Enemy():
         self._h = self._base_size
 
         self._images = [
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\WBdolphin_1_100.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\WBdolphin_2_100.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "WBdolphin_1_100.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "WBdolphin_2_100.png").convert_alpha(), (self._w, self._h)),
             
         ]
         self._image = self._images[0]
@@ -82,7 +82,7 @@ class Enemy():
 class EnemyLeaf(Enemy):
     def __init__(self):
         super().__init__()
-        self._images = [pg.transform.smoothscale(pg.image.load(r"..\\images\\enemy_leaf.png").convert_alpha(), (self._w, self._h))] * 4
+        self._images = [pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "enemy_leaf.png").convert_alpha(), (self._w, self._h))] * 4
         # self._images = [pg.image.load(r"..\\images\\enemy_leaf.png")] * 4  # 4枚同じ画像でリストを作る
         self._image = self._images[0]
         self._etype = "leaf"
@@ -97,7 +97,7 @@ class EnemyLeaf(Enemy):
 class EnemyAqua(Enemy):
     def __init__(self):
         super().__init__()
-        self._images = [pg.transform.smoothscale(pg.image.load(r"..\\images\\enemy_aqua.png").convert_alpha(), (self._w, self._h))] * 4  # 4枚同じ画像でリストを作る
+        self._images = [pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "enemy_aqua.png").convert_alpha(), (self._w, self._h))] * 4  # 4枚同じ画像でリストを作る
         self._image = self._images[0]
         self._etype = "aqua"
         self._maxhp = [0, 0, 0, 100]#normal, fire, leaf, aqua
@@ -106,7 +106,7 @@ class EnemyAqua(Enemy):
 class EnemyFire(Enemy):
     def __init__(self):
         super().__init__()
-        self._images = [pg.transform.smoothscale(pg.image.load(r"..\\images\\enemy_fire_16.png").convert_alpha(), (self._w, self._h))] * 4  # 4枚同じ画像でリストを作る
+        self._images = [pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "enemy_fire_16.png").convert_alpha(), (self._w, self._h))] * 4  # 4枚同じ画像でリストを作る
         self._image = self._images[0]
         self._etype = "fire"
         self._maxhp = [0, 100, 0, 0]#normal, fire, leaf, aqua
@@ -118,12 +118,12 @@ class BombEffect():
         self._w = self._base_size
         self._h = self._base_size
         self._images = [
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_0_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_1_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_2_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_3_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_4_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_5_16.png").convert_alpha(), (self._w, self._h))
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_0_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_1_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_2_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_3_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_4_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_5_16.png").convert_alpha(), (self._w, self._h))
         ]
         self._image = self._images[0]
         self._effects = effects
@@ -148,12 +148,12 @@ class BombEffectStar(BombEffect):
         self._w = self._base_size
         self._h = self._base_size
         self._images = [
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_0_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_1_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_star_2_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_star_3_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_star_4_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bomb_star_5_16.png").convert_alpha(), (self._w, self._h))
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_0_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_1_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_2_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_3_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_4_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_5_16.png").convert_alpha(), (self._w, self._h))
         ]
         self._image = self._images[0]
 

@@ -1,5 +1,5 @@
 import pygame as pg
-from config import CUT_HEIGHT,  RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, scale_x, scale_y
+from config import CUT_HEIGHT,  RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, scale_x, scale_y, IMAGE_DIR
 
 class Player():
     def __init__(self):
@@ -15,15 +15,15 @@ class Player():
 
     def reset(self):
         self._is_visible = True
-        self._base_size = 16 * RATIO_X  # 基本サイズをRATIO_Xでスケーリング
+        self._base_size = 16 * RATIO_X  # 基本サイズをRATIO_Xでスケーリング。16とはピクセル数
         self._w = self._base_size
         self._h = self._base_size
 
         self._images = [
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
         ]
         self._image = self._images[0]
 
