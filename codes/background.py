@@ -1,14 +1,9 @@
 import pygame as pg
-from config import BACKGROUND_IMAGE, CUT_HEIGHT, RATIO_Y, SCREEN_WIDTH, SCREEN_HEIGHT, BASE_SCREEN_WIDTH, BASE_SCREEN_HEIGHT, scale_x, scale_y
-
+from config import CUT_HEIGHT, RATIO_Y, SCREEN_WIDTH, SCREEN_HEIGHT, IMAGE_DIR, RATIO_X, RATIO_Y
 
 class Background():
     def __init__(self):
-        self._image = pg.image.load(BACKGROUND_IMAGE).convert_alpha()
-        # 背景も同じ基準サイズに揃える
-        base_w = scale_x(BASE_SCREEN_WIDTH)
-        base_h = scale_y(BASE_SCREEN_HEIGHT)
-        self._image = pg.transform.smoothscale(self._image, (base_w, base_h))
+        self._image = pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "background_night_town.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
         self._bg_x = 0
         self._rect = self._image.get_rect()
         self._rect.topleft = (0, 0)

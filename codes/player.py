@@ -1,5 +1,5 @@
 import pygame as pg
-from config import CUT_HEIGHT,  RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, scale_x, scale_y, IMAGE_DIR
+from config import CUT_HEIGHT,  RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, IMAGE_DIR
 
 class Player():
     def __init__(self):
@@ -27,8 +27,8 @@ class Player():
         ]
         self._image = self._images[0]
 
-        self._rect = pg.Rect(scale_x(5), scale_y(2), self._w, self._h)
-        self._speed = scale_x(1)
+        self._rect = pg.Rect(SCREEN_WIDTH / 20, SCREEN_HEIGHT /2.5, self._w, self._h)
+        self._speed = 1 * RATIO_X
         self._cnt = 0
 
     def update(self):
