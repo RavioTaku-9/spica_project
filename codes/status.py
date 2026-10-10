@@ -1,6 +1,6 @@
 import pygame as pg
 
-from config import RATIO_X, RATIO_Y, SCREEN_WIDTH, SCREEN_HEIGHT, SPICA_HP_MAX
+from config import RATIO_X, RATIO_Y, SCREEN_WIDTH, SCREEN_HEIGHT, SPICA_HP_MAX, IMAGE_DIR
 import gamecontrol
 
 class Observer():
@@ -10,8 +10,6 @@ class Observer():
 class Status(Observer):
     def __init__(self, game):
         self._game = game
-
-
 
         self.reset()
         self._board = pg.Surface((800 * RATIO_X, 10 * RATIO_Y), pg.SRCALPHA)
@@ -25,8 +23,8 @@ class Status(Observer):
         self._w = self._base_size
         self._h = self._base_size
         self._spica_hp_images = [
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\spica_hp_0_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\spica_hp_1_16.png").convert_alpha(), (self._w, self._h))
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "spica_hp_0_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "spica_hp_1_16.png").convert_alpha(), (self._w, self._h))
         ]
         self._spica_hp_image = self._spica_hp_images[0]
         self._font = pg.font.Font(None, int(10 * RATIO_X))

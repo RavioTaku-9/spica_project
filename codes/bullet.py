@@ -1,7 +1,7 @@
 import math
 
 import pygame as pg
-from config import BASE_SCREEN_WIDTH, CUT_HEIGHT, RATIO_X, RATIO_Y
+from config import BASE_SCREEN_WIDTH, CUT_HEIGHT, RATIO_X, RATIO_Y, IMAGE_DIR
 
 class Bullet():
     def __init__(self, rect):
@@ -13,7 +13,7 @@ class Bullet():
         x = rect.x + 16 * RATIO_X
         y = rect.y + 2 * RATIO_X
 
-        self._image = pg.image.load(r"..\\images\\bullet.png")
+        self._image = pg.image.load(IMAGE_DIR / "bullet.png")
         self._image = pg.transform.smoothscale(self._image, (self._w, self._h))
         self._rect = self._image.get_rect()
         self._rect.topleft = (x, y)
@@ -60,9 +60,9 @@ class StarBullet(Bullet):
         self._cnt = 0
 
         self._images = [
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bullet_star_1.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bullet_star_2.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(r"..\\images\\bullet_star_3.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bullet_star_1.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bullet_star_2.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bullet_star_3.png").convert_alpha(), (self._w, self._h)),
         ]
         self._image = self._images[0]
 
@@ -93,28 +93,28 @@ class StarBullet(Bullet):
 class FireBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\bullet_fire.png")
+        self._image = pg.image.load(IMAGE_DIR / "bullet_fire.png")
         self._image = pg.transform.smoothscale(self._image, (self._w, self._h))
         self._damage = [34, 100, 0, 0]  # normal, fire, leaf, aqua
 
 class LeafBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\bullet_leaf.png")
+        self._image = pg.image.load(IMAGE_DIR / "bullet_leaf.png")
         self._image = pg.transform.smoothscale(self._image, (self._w, self._h))
         self._damage = [34, 0, 100, 0]  # normal, fire, leaf, aqua
 
 class AquaBullet(Bullet):
     def __init__(self, rect):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\bullet_aqua.png")
+        self._image = pg.image.load(IMAGE_DIR / "bullet_aqua.png")
         self._image = pg.transform.smoothscale(self._image, (self._w, self._h))
         self._damage = [34, 0, 0, 100]  # normal, fire, leaf, aqua
 
 class EnemyBullet(Bullet):
     def __init__(self, rect, vx= -1.5 * RATIO_X , vy=0):
         super().__init__(rect)
-        self._image = pg.image.load(r"..\\images\\enemy_bullet.png")
+        self._image = pg.image.load(IMAGE_DIR / "enemy_bullet.png")
         self._image = pg.transform.smoothscale(self._image, (self._w, self._h))
         self._vx = vx
         self._vy = vy
