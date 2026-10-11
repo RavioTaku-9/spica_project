@@ -20,10 +20,10 @@ class Player():
         self._h = self._base_size
 
         self._images = [
-            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_16.png").convert_alpha(), (self._w, self._h)),
-            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_16.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_100.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha(), (self._w, self._h)),
+            pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_100.png").convert_alpha(), (self._w, self._h)),
         ]
         self._image = self._images[0]
 

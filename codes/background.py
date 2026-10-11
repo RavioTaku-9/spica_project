@@ -1,9 +1,19 @@
 import pygame as pg
 from config import CUT_HEIGHT, RATIO_Y, SCREEN_WIDTH, SCREEN_HEIGHT, IMAGE_DIR, RATIO_X, RATIO_Y
 
+import random
+
 class Background():
     def __init__(self):
-        self._image = pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "background_night_town.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        self._images =[pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "background_night_town.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                       pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "background_twilignt_2.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                       pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "background_day_town.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                       pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "background_snow_mountain_1.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT)),
+                       pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "background_musium_1.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
+                       ]
+        
+        self._image = self._images[random.randint(0, len(self._images)-1)]
+        
         self._bg_x = 0
         self._rect = self._image.get_rect()
         self._rect.topleft = (0, 0)
