@@ -1,6 +1,6 @@
 import pygame as pg
 import player, enemy, bullet, background, status, sound
-from config import IFRAMES, SPICA_HP_MAX, RATIO_X, SCREEN_WIDTH, SCREEN_HEIGHT
+from config import SPICA_HP_MAX, RATIO_X, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Subject():
     def __init__(self):
@@ -51,7 +51,6 @@ class GameManager(Subject):
         self._is_playing = True
         self._is_cleared = False
         self._spica_hp = SPICA_HP_MAX
-        self._iframes = 0
         self._death_effect_started = False
         self._player.reset()
         self._enemies.clear()
@@ -69,7 +68,6 @@ class GameManager(Subject):
         self.notify("distance")
         self._background.update(SCREEN_WIDTH)
         self._bullet_count += 1
-        self._iframes -= 1
         self._enemy_fire_time += 1
 
         if self._bullet_count >= 40:
@@ -111,6 +109,7 @@ class GameManager(Subject):
         # 敵の弾の削除処理
         self._enemy_bullets = [b for b in self._enemy_bullets if b.is_alive]
         self._player.update()
+        
         self._spawn_count += 1
         #敵の生成
         if self._spawn_count >= 40:
@@ -130,9 +129,11 @@ class GameManager(Subject):
 
             e.update()
             #プレイヤーと敵の衝突判定
-            if e.rect.colliderect(self._player.rect) and self._iframes <= 0:
+            if e.rect.colliderect(self._player.rect) and not self._player.is_invincible:
                 self._spica_hp -= 1
-                self._iframes = IFRAMES
+                self._player.damage()  # State遷移を呼ぶ
+                if self._spica_hp == 1:
+                    sound.SoundManager.get_instance().lifealart()
                 if self._spica_hp <= 0:
                     self.game_over()
                 
@@ -140,15 +141,15 @@ class GameManager(Subject):
 
         #敵の弾とプレイヤーの衝突判定
         for b in self._enemy_bullets:
-            if b.rect.colliderect(self._player.rect) and self._iframes <= 0:
+            if b.rect.colliderect(self._player.rect) and not self._player.is_invincible:
                 self._spica_hp -= 1
+                self._player.damage()  # State遷移を呼ぶ
                 if self._spica_hp == 1:
                     sound.SoundManager.get_instance().lifealart()
-                self._iframes = IFRAMES
                 b.is_alive = False
                 if self._spica_hp <= 0:
                     self.game_over()
-
+        
     def draw(self, screen):
         self._background.draw(screen, SCREEN_WIDTH)
         for b in self._bullets:
@@ -156,7 +157,7 @@ class GameManager(Subject):
         for e in self._effects:
             e.draw(screen)
 
-        self._player.draw(screen, self._iframes > 0)
+        self._player.draw(screen)
 
         for e in self._enemies:
             e.draw(screen)
@@ -170,8 +171,10 @@ class GameManager(Subject):
             return
 
         self._death_effect_started = True
-        self._player._is_visible = False
-
+        self._player.die()
+        
+        # ゲームオーバー時のアニメーションをエフェクトとして追加
+        # エフェクトシステムは_is_playingに依存していないため
         effect_rect = self._player.rect.copy()
         self._effects.append(
             enemy.BombEffectStar(effect_rect, self._effects)
