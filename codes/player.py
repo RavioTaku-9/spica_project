@@ -22,7 +22,6 @@ class PlayerState():
     def image(self):
         return self._image
     
-# ゲーム開始時のモーション。不使用
 class StartState(PlayerState):
     def __init__(self, player):
         super().__init__(player)
@@ -140,7 +139,7 @@ class Player():
         self._w = self._base_size
         self._h = self._base_size
         self._timeout = 0     
-        self._state = IdleState(self)
+        self._state = StartState(self)
         self._rect = pg.Rect(SCREEN_WIDTH / 20, SCREEN_HEIGHT /2.5, self._w, self._h)
         self._speed = 1 * RATIO_X
         self._cnt = 0

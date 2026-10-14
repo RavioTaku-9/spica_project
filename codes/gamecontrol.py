@@ -1,6 +1,7 @@
 import pygame as pg
 import player, enemy, bullet, background, status, sound
 from config import SPICA_HP_MAX, RATIO_X, SCREEN_WIDTH, SCREEN_HEIGHT
+from stage_config import STAGES
 
 class Subject():
     def __init__(self):
@@ -25,14 +26,18 @@ class GameManager(Subject):
         self._bullets = []
         self._enemy_bullets = []
         self._enemy_fire_time = 0
-        self._background = background.Background()
+        # self._background = background.Background()
+        self._current_stage_index = 0
+        self._current_stage = STAGES[0]
+        self._background = background.Background(self._current_stage.bg_index) 
         self.reset()
         #起動時の設定
         self._is_titling = True
         self._is_playing = False
-    
+        
     @property
     def is_titling(self):
+        
         return self._is_titling
 
     @property
@@ -59,6 +64,8 @@ class GameManager(Subject):
         self._bullet_count = 0
         self._enemy_bullets.clear()
         self._enemy_fire_time = 0
+        self._background = background.Background(self._current_stage.bg_index)
+        
         self._status.reset()
         self._effects.clear()
         sound.SoundManager.get_instance().stop_over()
@@ -185,6 +192,7 @@ class GameManager(Subject):
         self._is_playing = False
         self._is_cleared = False
 
+    # is_playing = Falseのときにmygameから呼び出される
     def update_effects(self):
         for effect in self._effects.copy():
             effect.update()

@@ -4,10 +4,17 @@ import pygame as pg
 import player
 import background
 from config import IMAGE_DIR, RATIO_X, RATIO_Y, RATIO_Y, SCREEN_WIDTH, SCREEN_HEIGHT, BASE_SCREEN_WIDTH, BASE_SCREEN_HEIGHT
+from stage_config import STAGES
 
 class ResultScene():
     def __init__(self, game):
         self._player_title = player.Player()
+         # タイトル用プレイヤーの画像を設定
+        title_player_img = pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha()
+        self._player_title._state._image = pg.transform.smoothscale(
+            title_player_img,
+            (self._player_title._state._w, self._player_title._state._h)
+        )
         
         self._background_title = background.Background()
         font = pg.font.Font(None, int(10 * RATIO_X))
@@ -17,29 +24,37 @@ class ResultScene():
         self._titlemsg = pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "title_transparent_3.png").convert_alpha(), (SCREEN_WIDTH*0.8, SCREEN_HEIGHT*0.8))
         
         self._msg = font.render("Press SPACE to replay.", True, pg.Color("WHITE"))
+        self._font = pg.font.Font(None, int(10 * RATIO_X))
         
-        self._gameover = pg.image.load(IMAGE_DIR / "gameover.png").convert_alpha()
-        w, h = self._gameover.get_size()
-        self._gameover = pg.transform.smoothscale(self._gameover,(int(w * RATIO_X), int(h * RATIO_Y)))
+        # self._gameover = pg.image.load(IMAGE_DIR / "gameover.png").convert_alpha()
+        # w, h = self._gameover.get_size()
+        # self._gameover = pg.transform.smoothscale(self._gameover,(int(w * RATIO_X), int(h * RATIO_Y)))
 
         # self._gameover_spica = pg.image.load(r"..\\images\\gameover_spica.PNG").convert_alpha()
         # w, h = self._gameover_spica.get_size()
         # self._gameover_spica = pg.transform.smoothscale(self._gameover_spica,(int(w * RATIO_X), int(h * RATIO_Y)))
 
-        self._gameclear = pg.image.load(IMAGE_DIR / "gameclear.png").convert_alpha()
-        w, h = self._gameclear.get_size()
-        self._gameclear = pg.transform.smoothscale(self._gameclear, (int(w * RATIO_X), int(h * RATIO_Y)))
-
-        # タイトル用プレイヤーの画像を設定
-        title_player_img = pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha()
-        self._player_title._state._image = pg.transform.smoothscale(
-            title_player_img,
-            (self._player_title._state._w, self._player_title._state._h)
-        )
-
+        # self._gameclear = pg.image.load(IMAGE_DIR / "gameclear.png").convert_alpha()
+        # w, h = self._gameclear.get_size()
+        # self._gameclear = pg.transform.smoothscale(self._gameclear, (int(w * RATIO_X), int(h * RATIO_Y)))
 
     def update(self):
         if self._game._is_titling:
+            # ステージ選択
+            key = pg.key.get_pressed()
+            if key[pg.K_RIGHT]:
+                self._background_title.next_background()
+                if self._background_title.bg_index != self._game._current_stage.bg_index:
+                    # 背景が変更されたらステージも変更
+                    self._game._current_stage_index = self._background_title.bg_index
+                    self._game._current_stage = STAGES[self._game._current_stage_index]
+            if key[pg.K_LEFT]:
+                self._background_title.prev_background()
+                if self._background_title.bg_index != self._game._current_stage.bg_index:
+                    # 背景が変更されたらステージも変更
+                    self._game._current_stage_index = self._background_title.bg_index
+                    self._game._current_stage = STAGES[self._game._current_stage_index]
+            
             # player_titleの処理
             if not hasattr(self, '_time'):
                 self._time = 0
@@ -62,7 +77,14 @@ class ResultScene():
             # screen.blit(self._title, (0, 0))
             screen.blit(self._titlemsg, (SCREEN_WIDTH/2 *0.2, SCREEN_HEIGHT/500-100))
             self._player_title.draw(screen)
+            stage = self._font.render(f"Stage {self._background_title.bg_index+ 1}", True, pg.Color("BLACK"))
+            screen.blit(stage, (70 * RATIO_X, 130 * RATIO_Y))
             
+            stage_right = self._font.render(f">", True, pg.Color("BLACK"))
+            screen.blit(stage_right, (100 * RATIO_X, 130 * RATIO_Y))
+            
+            stage_left = self._font.render(f"<", True, pg.Color("BLACK"))
+            screen.blit(stage_left, (60 * RATIO_X, 130 * RATIO_Y))
             
         elif self._game.is_playing == False:
             if self._game.is_cleared == True:

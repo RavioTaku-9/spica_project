@@ -1,16 +1,10 @@
 from pathlib import Path
 
-TITLE = "Spica"
+TITLE = "Starlit Spica Pocket"
 
 BASE_DIR = Path(__file__).resolve().parent
 IMAGE_DIR = BASE_DIR.parent / "images"
 SOUND_DIR = BASE_DIR.parent / "sounds"
-
-# TITLE_IMAGE = IMAGE_DIR / "background_night_town.png"
-# TITLEMSG_IMAGE = IMAGE_DIR / "title_transparent_2.png"
-# BACKGROUND_IMAGE = IMAGE_DIR / "background_night_town.png"
-# GAMECLEAR_IMAGE = IMAGE_DIR / "gameclear.png"
-# GAMEOVER_IMAGE = IMAGE_DIR / "gameover.png"
 
 #基本となるサイズ
 BASE_SCREEN_WIDTH = 160

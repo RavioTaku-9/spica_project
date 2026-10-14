@@ -7,7 +7,6 @@ pg.init()
 info = pg.display.Info()
 config.SCREEN_WIDTH = min(config.SCREEN_WIDTH, info.current_w - 80)
 config.SCREEN_HEIGHT = min(config.SCREEN_HEIGHT, info.current_h - 120)
-
 screen = pg.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT), pg.RESIZABLE)
 pg.display.set_caption(config.TITLE)
 
