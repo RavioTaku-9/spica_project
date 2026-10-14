@@ -1,4 +1,3 @@
-from logging import config
 import math
 
 import pygame as pg

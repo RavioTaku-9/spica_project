@@ -38,7 +38,7 @@ class Status(Observer):
             self._score += 100
 
     def draw(self, screen):
-        if self._game._is_titling:
+        if self._game.is_titling:
             return 
         #pg.draw.rect(self._board, (0,0,0,128), pg.Rect(0, 0, 320, 40)) #(0,0,0,128)はRGB透明
         #screen.blit(self._board, (0, 0))

@@ -1,5 +1,4 @@
 import pygame as pg
-import math
 from config import CUT_HEIGHT,  RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, IMAGE_DIR, TIMEOUT
 
 class PlayerState():

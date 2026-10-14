@@ -39,7 +39,7 @@ class ResultScene():
         # self._gameclear = pg.transform.smoothscale(self._gameclear, (int(w * RATIO_X), int(h * RATIO_Y)))
 
     def update(self):
-        if self._game._is_titling:
+        if self._game.is_titling:
             # ステージ選択
             key = pg.key.get_pressed()
             if key[pg.K_RIGHT]:
@@ -72,7 +72,7 @@ class ResultScene():
             self._game.reset()
 
     def draw(self, screen):
-        if self._game._is_titling:
+        if self._game.is_titling:
             self._background_title.draw(screen, SCREEN_WIDTH)
             # screen.blit(self._title, (0, 0))
             screen.blit(self._titlemsg, (SCREEN_WIDTH/2 *0.2, SCREEN_HEIGHT/500-100))
