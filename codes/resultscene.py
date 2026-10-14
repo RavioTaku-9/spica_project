@@ -8,6 +8,7 @@ from config import IMAGE_DIR, RATIO_X, RATIO_Y, RATIO_Y, SCREEN_WIDTH, SCREEN_HE
 class ResultScene():
     def __init__(self, game):
         self._player_title = player.Player()
+        
         self._background_title = background.Background()
         font = pg.font.Font(None, int(10 * RATIO_X))
         self._game = game
@@ -28,6 +29,14 @@ class ResultScene():
         self._gameclear = pg.image.load(IMAGE_DIR / "gameclear.png").convert_alpha()
         w, h = self._gameclear.get_size()
         self._gameclear = pg.transform.smoothscale(self._gameclear, (int(w * RATIO_X), int(h * RATIO_Y)))
+
+        # タイトル用プレイヤーの画像を設定
+        title_player_img = pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha()
+        self._player_title._state._image = pg.transform.smoothscale(
+            title_player_img,
+            (self._player_title._state._w, self._player_title._state._h)
+        )
+
 
     def update(self):
         if self._game._is_titling:

@@ -1,4 +1,5 @@
 import pygame as pg
+import math
 from config import CUT_HEIGHT,  RATIO_X, RATIO_Y, SCREEN_HEIGHT, SCREEN_WIDTH, IMAGE_DIR, TIMEOUT
 
 class PlayerState():
@@ -21,12 +22,44 @@ class PlayerState():
     def image(self):
         return self._image
     
+# ゲーム開始時のモーション。不使用
+class StartState(PlayerState):
+    def __init__(self, player):
+        super().__init__(player)
+        self._images = [
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_2_16.png").convert_alpha(), (self._w, self._h)),
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_3_16.png").convert_alpha(), (self._w, self._h)),
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_4_16.png").convert_alpha(), (self._w, self._h)),
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "bomb_star_5_16.png").convert_alpha(), (self._w, self._h)),
+                ]
+        self._image = self._images[0]
+        self._cnt = 0
+        self._is_visible = True
+        
+    def update(self):
+        self._cnt += 1
+        self._image = self._images[self._cnt // 10 % 4]
+        if self._cnt >= 20:
+            return IdleState(self._player)
+        return self
+    
+
 class IdleState(PlayerState):
     def __init__(self, player):
         super().__init__(player)
-        self._image = pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha(), (self._w, self._h))
+        self._images = [
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha(), (self._w, self._h)),
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_100.png").convert_alpha(), (self._w, self._h)),
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_1_100.png").convert_alpha(), (self._w, self._h)),
+                    pg.transform.smoothscale(pg.image.load(IMAGE_DIR / "majo_side_2_100.png").convert_alpha(), (self._w, self._h)),
+                ]
+        self._image = self._images[0]
+        self._cnt = 0
+        self._is_visible = True
 
     def update(self):
+        self._cnt += 1
+        self._image = self._images[self._cnt // 10 % 4]
         key = pg.key.get_pressed()
         if key[pg.K_LEFT] or key[pg.K_RIGHT] or key[pg.K_UP] or key[pg.K_DOWN]:
             return MovingState(self._player)
@@ -88,11 +121,6 @@ class GameoverState(PlayerState):   #is_paying = false時の描画が難のた�
     def draw(self, screen, rect):
         pass  # 描画しない
         
-    # @property
-    # def is_animation_complete(self):
-    #     return self._animation_complete
-    
-
 class Player():
     def __init__(self):
         self._is_visible = True
@@ -119,9 +147,15 @@ class Player():
 
     def update(self):
         self._state = self._state.update()
+
         #無敵時間がまだあればカウントを減らす
         if self._timeout > 0:
             self._timeout -= 1
+            
+        # StartStateのときは移動しない
+        if isinstance(self._state, StartState):
+            return
+            
         key = pg.key.get_pressed()
         vx = 0
         vy = 0
@@ -147,7 +181,6 @@ class Player():
         self._state.draw(screen, self._rect)
         
         # プレイヤーの近くに表示する弾の見本
-        
         # fire_rect = self._rect.copy()
         # fire_rect.x += 3 * RATIO_X  
         # fire_rect.y -= 3 * RATIO_Y  
